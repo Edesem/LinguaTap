@@ -10,36 +10,8 @@ import {
 } from "react-native";
 import { Text } from "@/components/Themed";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import janosVitez from "../../assets/texts/poem";
 
-const poem = `Tüzesen süt le a nyári nap sugára
-Az ég tetejéről a juhászbojtárra.
-Fölösleges dolog sütnie oly nagyon,
-A juhásznak úgyis nagy melege vagyon.
-
-Szerelem tüze ég fiatal szivében,
-Ugy legelteti a nyájt a faluvégen.
-Faluvégen nyája mig szerte legelész,
-Ő addig subáján a fűben heverész.
-
-Tenger virág nyílik tarkán körülötte.
-De ő a virágra szemét nem vetette;
-Egy kőhajtásnyira foly tőle a patak,
-Bámuló szemei odatapadtanak.
-
-De nem ám a patak csillámló habjára,
-Hanem a patakban egy szőke kislyányra,
-A szőke kislyánynak karcsu termetére,
-Szép hosszú hajára, gömbölyű keblére.
-
-Kisleány szoknyája térdig föl van hajtva,
-Mivelhogy ruhákat mos a fris patakba';
-Kilátszik a vízből két szép térdecskéje
-Kukoricza Jancsi gyönyörűségére.
-
-Mert a pázsit fölött heverésző juhász
-Kukoricza Jancsi, ki is lehetne más?
-Ki pedig a vízben a ruhát tisztázza,
-Iluska az, Jancsi szivének gyöngyháza.`;
 
 export default function TabOneScreen() {
   const [selectedWord, setSelectedWord] = useState("");
@@ -49,23 +21,39 @@ export default function TabOneScreen() {
 
   const EXPO_PUBLIC_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
+  const extractHungarianDefinition = (content: string): string | null => {
+    const lines = content.split("\n");
+    const startIndex = lines.findIndex((line) => line.includes("==Hungarian=="));
+    if (startIndex === -1) return null;
+
+    const endIndex = lines.findIndex(
+      (line, idx) => idx > startIndex && /^==[^=]+==/.test(line)
+    );
+
+    const hungarianLines = lines.slice(startIndex + 1, endIndex !== -1 ? endIndex : undefined);
+    return hungarianLines.join("\n");
+  };
+
   const fetchFromWiktionary = async (word: string) => {
     try {
       const response = await fetch(
-        `https://en.wiktionary.org/w/api.php?action=query&titles=${word}&prop=extracts&explaintext=1&format=json&origin=*&uselang=hu`
+        `https://en.wiktionary.org/w/api.php?action=query&titles=${word}&prop=revisions&rvprop=content&format=json&origin=*`
       );
       const data = await response.json();
       const page = Object.values(data.query.pages)[0];
 
-      // Return only the Hungarian definition if available
-      return typeof page.extract === "string" && page.extract.length > 0
-        ? page.extract
-        : null;
+      if (!page.revisions || !page.revisions[0]["*"]) return null;
+
+      const content = page.revisions[0]["*"];
+      const hungarianSection = extractHungarianDefinition(content);
+
+      return hungarianSection || null;
     } catch (err) {
       console.error("Wiktionary fetch error:", err);
       return null;
     }
   };
+
 
   const handleWordPress = async (word: string) => {
     setSelectedWord(word);
