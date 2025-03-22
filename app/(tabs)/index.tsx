@@ -12,8 +12,6 @@ import { Text } from "@/components/Themed";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import janosVitez from "../../assets/texts/poem";
 
-const poem = janosVitez;
-
 export default function TabOneScreen() {
   const [selectedWord, setSelectedWord] = useState("");
   const [definition, setDefinition] = useState("");
@@ -100,19 +98,24 @@ export default function TabOneScreen() {
   };
 
   const renderPoem = () => {
-    return poem.split("\n").map((line, i) => (
-      <View key={i} style={styles.line}>
-        {line.split(" ").map((word, j) => {
-          const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'’"]/g, "");
-          return (
-            <TouchableOpacity
-              key={j}
-              onPress={() => handleWordPress(cleanWord)}
-            >
-              <Text style={styles.word}>{word} </Text>
-            </TouchableOpacity>
-          );
-        })}
+    return janosVitez.map((chapter, chapterIndex) => (
+      <View key={chapterIndex} style={styles.chapterContainer}>
+        <Text style={styles.chapterTitle}>{chapter.title}</Text>
+        {chapter.content.split("\n").map((line, lineIndex) => (
+          <View key={lineIndex} style={styles.line}>
+            {line.split(" ").map((word, wordIndex) => {
+              const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'’"]/g, "");
+              return (
+                <TouchableOpacity
+                  key={wordIndex}
+                  onPress={() => handleWordPress(cleanWord)}
+                >
+                  <Text style={styles.word}>{word} </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ))}
       </View>
     ));
   };
@@ -204,5 +207,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginTop: 10,
+  },
+  chapterContainer: {
+    marginBottom: 30,
+  },
+  chapterTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#2C3E50",
   },
 });
