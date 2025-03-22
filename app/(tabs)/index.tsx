@@ -12,6 +12,7 @@ import { Text } from "@/components/Themed";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import janosVitez from "../../assets/texts/poem";
 
+const poem = janosVitez;
 
 export default function TabOneScreen() {
   const [selectedWord, setSelectedWord] = useState("");
