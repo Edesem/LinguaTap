@@ -11,8 +11,7 @@ import { router } from 'expo-router';
 
 export default function Index({ navigation }: { navigation: any }) {
   const availableLanguages = [
-    'English', 'Hungarian', 'Romanian', 'Greek', 'Russian', 'Arabic', 'Spanish',
-    'French', 'German', 'Italian', 'Ukrainian', 'Georgian', 'Coptic', 'Amharic',
+    'English', 'Hungarian', 'Romanian'
   ];
 
   const [modalVisible, setModalVisible] = useState(false);

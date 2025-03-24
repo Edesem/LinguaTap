@@ -9,7 +9,7 @@ export default function BookSelectionScreen() {
 
   const availableBooks = {
     English: ['Book 1', 'Book 2'],
-    Hungarian: ['Book A', 'Book B'],
+    Hungarian: ['János Vitéz - Petőfi Sándor', 'Toldi - Arany János'],
     Romanian: ['Book X', 'Book Y'],
   };
 
