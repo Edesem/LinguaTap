@@ -63,7 +63,7 @@ export default function TabLayout() {
         name="bookSelectionScreen"
         options={{
           title: 'Select Book',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
         }}
       />
 

@@ -1,23 +1,74 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Modal,
+  TextInput,
+} from 'react-native';
 import { Text, View } from '@/components/Themed';
+import { router } from 'expo-router';
 
 export default function Index({ navigation }: { navigation: any }) {
-  const availableLanguages = ['English', 'Hungarian', 'Romanian']; // Example languages
+  const availableLanguages = [
+    'English', 'Hungarian', 'Romanian', 'Greek', 'Russian', 'Arabic', 'Spanish',
+    'French', 'German', 'Italian', 'Ukrainian', 'Georgian', 'Coptic', 'Amharic',
+  ];
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredLanguages = availableLanguages.filter((lang) =>
+    lang.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleLanguageSelect = (language: string) => {
-    // Navigate to the book selection screen
-    navigation.navigate('bookSelectionScreen', { language });
+    router.push({
+      pathname: '/bookSelectionScreen',
+      params: { language },
+    });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Select a Language</Text>
-      {availableLanguages.map((language) => (
-        <TouchableOpacity key={language} onPress={() => handleLanguageSelect(language)}>
-          <Text style={styles.languageOption}>{language}</Text>
-        </TouchableOpacity>
-      ))}
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.buttonText}>Choose Language</Text>
+      </TouchableOpacity>
+
+      {/* Modal with searchable list */}
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search languages..."
+            value={searchTerm}
+            onChangeText={setSearchTerm}
+          />
+          <FlatList
+            data={filteredLanguages}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => handleLanguageSelect(item)}
+                style={styles.languageItem}
+              >
+                <Text style={styles.languageText}>{item}</Text>
+              </TouchableOpacity>
+            )}
+          />
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text style={{ color: 'white' }}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -30,13 +81,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  languageOption: {
-    fontSize: 20,
-    marginVertical: 10,
-    color: '#007AFF',
+  button: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  modalContainer: {
+    flex: 1,
+    padding: 20,
+    paddingTop: 60,
+  },
+  searchInput: {
+    fontSize: 18,
+    padding: 10,
+    borderBottomWidth: 1,
+    marginBottom: 20,
+  },
+  languageItem: {
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  languageText: {
+    fontSize: 18,
+  },
+  closeButton: {
+    backgroundColor: '#007AFF',
+    padding: 12,
+    marginTop: 20,
+    borderRadius: 10,
+    alignItems: 'center',
   },
 });
