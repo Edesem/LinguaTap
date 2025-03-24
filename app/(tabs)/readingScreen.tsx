@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   FlatList,
   ScrollView,
@@ -137,7 +137,7 @@ export default function ReadingScreen() {
   };
 
   // Apply dark or light mode styles based on color scheme
-  const styles = getStyles(colorScheme);
+  const styles = useMemo(() => getStyles(colorScheme), [colorScheme]);
 
   return (
     <SafeAreaProvider>
@@ -150,7 +150,7 @@ export default function ReadingScreen() {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           keyExtractor={(_, index) => index.toString()}
-          initialScrollIndex={currentChapterIndex} // Start from the last chapter index
+          initialScrollIndex={currentChapterIndex}
           renderItem={({ item, index }) => (
             <View style={{ width, height }}>
               <ScrollView contentContainerStyle={styles.chapterContainer}>
@@ -162,9 +162,17 @@ export default function ReadingScreen() {
           onMomentumScrollEnd={(e) => {
             const index = Math.floor(
               e.nativeEvent.contentOffset.x / width
-            ); // Calculate the chapter index based on scroll position
-            handleChapterChange(index); // Save the new chapter index
+            );
+            handleChapterChange(index);
           }}
+          getItemLayout={(data, index) => ({
+            length: width, // Each item has the same width as the screen
+            offset: width * index, // Offset is the position of the item
+            index, // The index of the item
+          })}
+          initialNumToRender={1}
+          maxToRenderPerBatch={3}
+          windowSize={5}
         />
 
         <Modal visible={modalVisible} transparent animationType="slide">
@@ -195,60 +203,68 @@ const getStyles = (colorScheme) => {
       backgroundColor: colorScheme === "dark" ? "#121212" : "#f7f7f7",
     },
     title: {
-      fontSize: 28,
-      fontWeight: "bold",
+      fontSize: 32,
+      fontWeight: "700",
       textAlign: "center",
-      marginVertical: 20,
+      marginVertical: 25,
       color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+      letterSpacing: 1,
     },
     chapterContainer: {
       paddingHorizontal: 20,
       paddingBottom: 300,
+      flexDirection: "column",
+      justifyContent: "center",
     },
     chapterTitle: {
-      fontSize: 22,
-      fontWeight: "bold",
-      marginBottom: 16,
+      fontSize: 24,
+      fontWeight: "600",
+      marginBottom: 20,
       color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+      borderBottomWidth: 1,
+      borderBottomColor: colorScheme === "dark" ? "#444" : "#DDD",
+      paddingBottom: 10,
     },
     line: {
       flexDirection: "row",
       flexWrap: "wrap",
       marginBottom: 8,
+      marginHorizontal: 10,
     },
     word: {
-      fontSize: 18,
+      fontSize: 20,
       color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
+      paddingHorizontal: 1.2,
+      fontFamily: "Georgia, serif",
     },
     modalBackground: {
       flex: 1,
-      backgroundColor: "#000000aa",
       justifyContent: "center",
       alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     modalBox: {
-      width: "85%",
-      backgroundColor: colorScheme === "dark" ? "#333" : "#fff",
+      width: 300,
       padding: 20,
-      borderRadius: 12,
+      backgroundColor: colorScheme === "dark" ? "#1e1e1e" : "#fff",
+      borderRadius: 10,
+      alignItems: "center",
     },
     modalTitle: {
       fontSize: 22,
-      fontWeight: "bold",
-      marginBottom: 10,
-      textAlign: "center",
+      fontWeight: "600",
       color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
     },
     modalContent: {
+      marginTop: 20,
       fontSize: 16,
-      marginBottom: 20,
-      color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
+      color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+      textAlign: "center",
     },
     closeButton: {
+      marginTop: 20,
+      fontSize: 16,
       color: "#007AFF",
-      fontSize: 18,
-      textAlign: "center",
-      marginTop: 10,
     },
   });
 };
