@@ -7,6 +7,7 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import BookSelectionScreen from './bookSelectionScreen';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -28,10 +29,18 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
-        name="readingScreen"
+        name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="readingScreen"
+        options={{
+          title: 'Read',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -48,13 +57,16 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      {/* Book Selection Tab */}
       <Tabs.Screen
-        name="two"
+        name="bookSelectionScreen"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Select Book',
+          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
         }}
       />
-    </Tabs>
+
+    </Tabs >
   );
 }
