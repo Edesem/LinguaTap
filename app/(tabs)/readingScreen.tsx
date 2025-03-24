@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   ScrollView,
@@ -10,10 +10,12 @@ import {
   ActivityIndicator,
   Dimensions,
   useColorScheme,
+  StatusBar,
 } from "react-native";
 import { Text } from "@/components/Themed";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import janosVitez from "../../assets/texts/poem";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,9 +24,34 @@ export default function ReadingScreen() {
   const [definition, setDefinition] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [currentChapterIndex, setCurrentChapterIndex] = useState(0); 
 
   const EXPO_PUBLIC_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
   const colorScheme = useColorScheme(); // Get the current color scheme
+
+  useEffect(() => {
+    // Retrieve the last chapter from AsyncStorage when the component mounts
+    const getLastChapter = async () => {
+      try {
+        const lastChapter = await AsyncStorage.getItem("lastChapter");
+        if (lastChapter !== null) {
+          setCurrentChapterIndex(parseInt(lastChapter, 10)); // Set the last chapter index
+        }
+      } catch (error) {
+        console.error("Error retrieving last chapter:", error);
+      }
+    };
+    getLastChapter();
+  }, []);
+
+  const handleChapterChange = async (index: number) => {
+    try {
+      await AsyncStorage.setItem("lastChapter", index.toString()); // Save the current chapter index
+      setCurrentChapterIndex(index); // Update state with the new chapter index
+    } catch (error) {
+      console.error("Error saving last chapter:", error);
+    }
+  };
 
   const extractHungarianDefinition = (content: string): string | null => {
     const lines = content.split("\n");
@@ -114,6 +141,7 @@ export default function ReadingScreen() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>János Vitéz</Text>
         <FlatList
@@ -122,7 +150,8 @@ export default function ReadingScreen() {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => (
+          initialScrollIndex={currentChapterIndex} // Start from the last chapter index
+          renderItem={({ item, index }) => (
             <View style={{ width, height }}>
               <ScrollView contentContainerStyle={styles.chapterContainer}>
                 <Text style={styles.chapterTitle}>{item.title}</Text>
@@ -130,6 +159,12 @@ export default function ReadingScreen() {
               </ScrollView>
             </View>
           )}
+          onMomentumScrollEnd={(e) => {
+            const index = Math.floor(
+              e.nativeEvent.contentOffset.x / width
+            ); // Calculate the chapter index based on scroll position
+            handleChapterChange(index); // Save the new chapter index
+          }}
         />
 
         <Modal visible={modalVisible} transparent animationType="slide">
