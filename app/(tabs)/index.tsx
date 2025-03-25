@@ -24,7 +24,7 @@ export default function Index({ navigation }: { navigation: any }) {
   const handleLanguageSelect = (language: string) => {
     setModalVisible(false);
     router.push({
-      pathname: '/bookSelectionScreen',
+      pathname: '/library',
       params: { language },
     });
   };

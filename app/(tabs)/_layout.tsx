@@ -6,8 +6,7 @@ import { Platform, Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import BookSelectionScreen from './bookSelectionScreen';
+import { SymbolView } from 'expo-symbols';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -23,24 +22,38 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint, // Active icon color
+        tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].text, // Inactive icon color
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-      }}>
+      }}
+    >
+
+      {/* Home Selection Tab */}
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <SymbolView name="house" tintColor={color} />,
         }}
       />
 
+      {/* Book Selection Tab */}
       <Tabs.Screen
-        name="readingScreen"
+        name="library"
+        options={{
+          title: 'Library',
+          tabBarIcon: ({ color }) => <SymbolView name="magnifyingglass" tintColor={color} />,
+        }}
+      />
+
+      {/* Read Selection Tab */}
+      <Tabs.Screen
+        name="read"
         options={{
           title: 'Read',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          tabBarIcon: ({ color }) => <SymbolView name="book" tintColor={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -58,15 +71,24 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Book Selection Tab */}
+      {/* Bookmarks Selection Tab */}
       <Tabs.Screen
-        name="bookSelectionScreen"
+        name="bookmarks"
         options={{
-          title: 'Select Book',
-          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+          title: 'Bookmarks',
+          tabBarIcon: ({ color }) => <SymbolView name="bookmark" tintColor={color} />,
         }}
       />
 
-    </Tabs >
+      {/* Settings Selection Tab */}
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <SymbolView name="line.horizontal.3" tintColor={color} />,
+        }}
+      />
+
+    </Tabs>
   );
 }

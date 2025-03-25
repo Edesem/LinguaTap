@@ -15,7 +15,7 @@ export default function BookSelectionScreen() {
 
   const handleBookSelect = (book: string) => {
     router.push({
-      pathname: '/(tabs)/readingScreen',
+      pathname: '/(tabs)/read',
       params: { book },
     });
   };
