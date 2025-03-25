@@ -145,9 +145,6 @@ export default function ReadingScreen() {
     <SafeAreaProvider>
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>{toldi.title}</Text>
-        <Text style={styles.author}>By {toldi.author}</Text>
-
         <FlatList
           data={toldi.content} // Use the content array from toldi
           horizontal
@@ -158,6 +155,13 @@ export default function ReadingScreen() {
           renderItem={({ item, index }) => (
             <View style={{ width, height }}>
               <ScrollView contentContainerStyle={styles.chapterContainer}>
+                {/* Title and Author inside each chapter */}
+                {index === 0 && (
+                  <>
+                    <Text style={styles.title}>{toldi.title}</Text>
+                    <Text style={styles.author}>By {toldi.author}</Text>
+                  </>
+                )}
                 {item.title ? (
                   <Text style={styles.chapterTitle}>{item.title}</Text>
                 ) : null}
@@ -178,7 +182,7 @@ export default function ReadingScreen() {
           maxToRenderPerBatch={3}
           windowSize={5}
         />
-
+  
         <Modal visible={modalVisible} transparent animationType="slide">
           <View style={styles.modalBackground}>
             <View style={styles.modalBox}>
@@ -197,6 +201,7 @@ export default function ReadingScreen() {
       </SafeAreaView>
     </SafeAreaProvider>
   );
+  
 }
 
 // Styles for both light and dark mode
@@ -231,6 +236,7 @@ const getStyles = (colorScheme) => {
       fontSize: 24,
       fontWeight: "600",
       marginBottom: 20,
+      paddingTop: 30,
       color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
       borderBottomWidth: 1,
       borderBottomColor: colorScheme === "dark" ? "#444" : "#DDD",
