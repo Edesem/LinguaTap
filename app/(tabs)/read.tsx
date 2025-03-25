@@ -29,6 +29,8 @@ export default function ReadingScreen() {
   const EXPO_PUBLIC_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
   const colorScheme = useColorScheme();
 
+  
+
   useEffect(() => {
     // Retrieve the last chapter from AsyncStorage when the component mounts
     const getLastChapter = async () => {
@@ -53,6 +55,74 @@ export default function ReadingScreen() {
     }
   };
 
+  const extractHungarianDefinition = (content: string): string | null => {
+    const lines = content.split("\n");
+    const startIndex = lines.findIndex((line) => line.includes("==Hungarian=="));
+    if (startIndex === -1) return null;
+
+    const endIndex = lines.findIndex(
+      (line, idx) => idx > startIndex && /^==[^=]+==/.test(line)
+    );
+
+    const hungarianLines = lines.slice(startIndex + 1, endIndex !== -1 ? endIndex : undefined);
+    return hungarianLines.join("\n");
+  };
+
+  const fetchFromWiktionary = async (word: string) => {
+    try {
+      const response = await fetch(
+        `https://en.wiktionary.org/w/api.php?action=query&titles=${word}&prop=revisions&rvprop=content&format=json&origin=*`
+      );
+      const data = await response.json();
+      const page = Object.values(data.query.pages)[0];
+
+      if (!page.revisions || !page.revisions[0]["*"]) return null;
+
+      const content = page.revisions[0]["*"];
+      const hungarianSection = extractHungarianDefinition(content);
+
+      return hungarianSection || null;
+    } catch (err) {
+      console.error("Wiktionary fetch error:", err);
+      return null;
+    }
+  };
+
+  const handleWordPress = async (word: string) => {
+    setSelectedWord(word);
+    setDefinition("");
+    setModalVisible(true);
+    setLoading(true);
+
+    try {
+      const wiktionaryDefinition = await fetchFromWiktionary(word);
+
+      if (wiktionaryDefinition) {
+        setDefinition(wiktionaryDefinition);
+      } else {
+        const response = await fetch("https://api.cohere.ai/v1/chat", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${EXPO_PUBLIC_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "command",
+            message: `You are an AI for an app that helps users understand old, archaic poetry. What does the Hungarian word "${word}" mean in János Vitéz? Keep it brief, show etymology if known, and note register.`,
+          }),
+        });
+
+        const data = await response.json();
+        setDefinition(data.text?.trim() || "No definition found.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setDefinition("Failed to fetch meaning.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const renderPoemLines = (text: string) => {
     return text.split("\n").map((line, i) => (
       <View key={i} style={styles.line}>
@@ -66,23 +136,6 @@ export default function ReadingScreen() {
         })}
       </View>
     ));
-  };
-
-  const handleWordPress = async (word: string) => {
-    setSelectedWord(word);
-    setDefinition("");
-    setModalVisible(true);
-    setLoading(true);
-
-    try {
-      // Fetch from Wiktionary or AI service for word definition
-      // (omitted for brevity, assume it's similar to your current implementation)
-    } catch (error) {
-      console.error("Error:", error);
-      setDefinition("Failed to fetch meaning.");
-    } finally {
-      setLoading(false);
-    }
   };
 
   // Apply dark or light mode styles based on color scheme
