@@ -1,74 +1,65 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Modal,
-  TextInput,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Text, View } from '@/components/Themed';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 
-export default function Index({ navigation }: { navigation: any }) {
-  const availableLanguages = [
-    'English', 'Hungarian', 'Romanian'
+export default function HomeScreen() {
+  const router = useRouter();
+
+  // Simulating user's last read book and recently read books
+  const [lastRead, setLastRead] = useState('János Vitéz - Petőfi Sándor');
+  const [recentBooks, setRecentBooks] = useState([
+    'János Vitéz - Petőfi Sándor',
+    'Toldi - Arany János',
+    'Book 1',
+  ]);
+
+  const quotes = [
+    '"A könyv a lélek tápláléka." - Unknown',
+    '"A journey of a thousand miles begins with a single step." - Lao Tzu',
+    '"Not all those who wander are lost." - J.R.R. Tolkien',
   ];
+  
+  const [randomQuote, setRandomQuote] = useState('');
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  useEffect(() => {
+    setRandomQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+  }, []);
 
-  const filteredLanguages = availableLanguages.filter((lang) =>
-    lang.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleLanguageSelect = (language: string) => {
-    setModalVisible(false);
+  // Function to navigate to the last read book
+  const handleContinueReading = () => {
     router.push({
-      pathname: '/library',
-      params: { language },
+      pathname: '/(tabs)/read',
+      params: { book: lastRead },
     });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select a Language</Text>
+      {/* Greeting */}
+      <Text style={styles.title}>Welcome Back! 📖</Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.buttonText}>Choose Language</Text>
-      </TouchableOpacity>
+      {/* Continue Reading Section */}
+      {lastRead && (
+        <TouchableOpacity style={styles.continueButton} onPress={handleContinueReading}>
+          <Text style={styles.continueText}>📚 Continue Reading: {lastRead}</Text>
+        </TouchableOpacity>
+      )}
 
-      {/* Modal with searchable list */}
-      <Modal visible={modalVisible} animationType="slide">
-        <View style={styles.modalContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search languages..."
-            value={searchTerm}
-            onChangeText={setSearchTerm}
-          />
-          <FlatList
-            data={filteredLanguages}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => handleLanguageSelect(item)}
-                style={styles.languageItem}
-              >
-                <Text style={styles.languageText}>{item}</Text>
-              </TouchableOpacity>
-            )}
-          />
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => setModalVisible(false)}
-          >
-            <Text style={{ color: 'white' }}>Close</Text>
+      {/* Recently Read Books */}
+      <Text style={styles.sectionTitle}>Recently Read</Text>
+      <FlatList
+        data={recentBooks}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.bookItem} onPress={() => router.push({ pathname: '/(tabs)/read', params: { book: item } })}>
+            <Text style={styles.bookText}>{item}</Text>
           </TouchableOpacity>
-        </View>
-      </Modal>
+        )}
+      />
+
+      {/* Random Featured Quote */}
+      <Text style={styles.quote}>{randomQuote}</Text>
     </View>
   );
 }
@@ -76,49 +67,45 @@ export default function Index({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 20,
+    paddingTop: 30,
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 20,
   },
-  button: {
+  continueButton: {
     backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    padding: 12,
     borderRadius: 10,
+    marginBottom: 20,
+    alignItems: 'center',
   },
-  buttonText: {
+  continueText: {
     color: '#fff',
     fontSize: 18,
   },
-  modalContainer: {
-    flex: 1,
-    padding: 20,
-    paddingTop: 60,
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  searchInput: {
-    fontSize: 18,
-    padding: 10,
-    borderBottomWidth: 1,
-    marginBottom: 20,
-  },
-  languageItem: {
-    paddingVertical: 12,
+  bookItem: {
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  languageText: {
+  bookText: {
     fontSize: 18,
+    color: '#007AFF',
   },
-  closeButton: {
-    backgroundColor: '#007AFF',
-    padding: 12,
-    marginTop: 20,
-    borderRadius: 10,
-    alignItems: 'center',
+  quote: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginTop: 30,
+    color: '#555',
   },
 });

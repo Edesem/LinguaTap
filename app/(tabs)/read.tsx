@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { Text } from "@/components/Themed";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import janosVitez from "../../assets/texts/poem";
+import janosVitez from "../../assets/texts/János Vitéz - Petőfi Sándor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
