@@ -1,7 +1,10 @@
-const janosVitez = [
-    {
-        title: "1.",
-        content: `Tüzesen süt le a nyári nap sugára
+const janosVitez = {
+    title: "János Vitéz",
+    author: "Petőfi Sándor",
+    content: [
+        {
+            title: "1.",
+            content: `Tüzesen süt le a nyári nap sugára
 Az ég tetejéről a juhászbojtárra.
 Fölösleges dolog sütnie oly nagyon,
 A juhásznak úgyis nagy melege vagyon.
@@ -60,10 +63,10 @@ Kicsalta a leányt édes beszédével,
 Átfogta derekát mind a két kezével,
 Megcsókolta száját nem egyszer sem százszor,
 Ki mindeneket tud: az tudja csak, hányszor.`,
-    },
-    {
-        title: "2.",
-        content: `Az idő aközben haladott sietve,
+        },
+        {
+            title: "2.",
+            content: `Az idő aközben haladott sietve,
 A patak habjain piroslott az este.
 Dúlt-fúlt Iluskának gonosz mostohája;
 Hol marad, hol lehet oly soká leánya?
@@ -107,10 +110,10 @@ Kukoricza Jancsi fölkapta subáját,
 S sebes lépésekkel ment keresni nyáját,
 Nagy megszeppenéssel most vette csak észre,
 Hogy imitt-amott van egy-kettő belőle.`,
-    },
-    {
-        title: "3.",
-        content: `A nap akkor már a földet érintette,
+        },
+        {
+            title: "3.",
+            content: `A nap akkor már a földet érintette,
 Mikor Jancsi a nyájt félig összeszedte;
 Nem tudja, hol lehet annak másik fele:
 Tolvaj - e vagy farkas, ami elment vele ?
@@ -169,10 +172,10 @@ Futott, míg a szuszból gazdája kifogyott;
 Azután ballagott, megállt, meg ballagott
 Jobbra is, balra is; s mindevvel mit akar ?
 Nem tudta, mert nagy volt fejében a zavar.`,
-    },
-    {
-        title: "4.",
-        content: `Mikorra a patak vize tükörré lett,
+        },
+        {
+            title: "4.",
+            content: `Mikorra a patak vize tükörré lett,
 Melybe ezer csillag ragyogása nézett:
 Jancsi Iluskáék kertje alatt vala;
 Maga sem tudta, hogy mikép jutott oda.
@@ -241,10 +244,10 @@ Ballagott, ballagott a halk éjszakában,
 Csak nehéz subája suhogott nyakában;
 Ő ugyan subáját gondolta nehéznek,
 Pedig a szive volt oly nehéz szegénynek.`,
-    },
-    {
-        title: "5.",
-        content: `Mikor a nap fölkelt, s a holdat elküldte,
+        },
+        {
+            title: "5.",
+            content: `Mikor a nap fölkelt, s a holdat elküldte,
 A puszta, mint tenger, feküdt körülötte;
 A nap fölkeltétől a nap enyésztéig
 Egyenes rónaság nyujtózkodott végig.
@@ -323,10 +326,10 @@ Sem erdő, sem holló őt nem háborgatván,
 Kukoricza Jancsi ment a maga utján;
 Erdő közepében sötét ösvényére
 Leküldte világát a hold sárga fénye.`,
-    },
-    {
-        title: "6.",
-        content: `Az idő járása éjfél lehetett már,
+        },
+        {
+            title: "6.",
+            content: `Az idő járása éjfél lehetett már,
 Mikor szemébe tünt egy pislogó sugár.
 Amint közelebb ért, látta, hogy ez a fény
 Ablakból világít az erdő legmélyén.
@@ -450,10 +453,10 @@ A föltámadó nap legelső sugára
 Lesütött a háznak füstölgő romjára,
 Pusztult ablakán át benézett a házba,
 Ott a haramjáknak csontvázait látta.`,
-    },
-    {
-        title: "7.",
-        content: `Jancsi már hetedhét országon túl jára,
+        },
+        {
+            title: "7.",
+            content: `Jancsi már hetedhét országon túl jára,
 Nem is igen gondolt a zsiványtanyára;
 Egyszerre valami csillámlott előtte,
 Hát sugarát a nap fegyverekre lőtte.
@@ -517,10 +520,10 @@ Lyányokra nézve ami Jancsit illeti,
 Egyetlenegy leány sem tetszett őneki,
 Az igaz, hogy noha sok földet bejára,
 Sehol sem akadt ő Iluska párjára.`,
-    },
-    {
-        title: "8.",
-        content: `Nos hát ment a sereg, csak ment, csak mendegélt,
+        },
+        {
+            title: "8.",
+            content: `Nos hát ment a sereg, csak ment, csak mendegélt,
 Tatárországnak már elérte közepét;
 De itten reája nagy veszedelem várt:
 Látott érkezni sok kutyafejű tatárt.
@@ -559,10 +562,10 @@ Az igaz, hogy nem is lett semmi bántása,
 De mégis örűlt, hogy elért a határra,
 Hogyne örűlt volna ? ez a szegény vidék
 Egyebet se' terem: medvehúst meg fügét.`,
-    },
-    {
-        title: "9.",
-        content: `Tatárország hegyes - völgyes tartománya
+        },
+        {
+            title: "9.",
+            content: `Tatárország hegyes - völgyes tartománya
 Messziről nézett a seregnek utána,
 Mert jól bent vala már nagy Taljánországban,
 Rozmarínfa - erdők sötét árnyékában.
@@ -576,10 +579,10 @@ No de a magyarság erős természete,
 Bármi nagy hideg volt, megbirkozott vele;
 Aztán meg, ha fáztak, hát kapták magokat,
 Leszálltak s hátokra vették a lovokat.`,
-    },
-    {
-        title: "10.",
-        content: `Ekképen jutottak át Lengyelországba,
+        },
+        {
+            title: "10.",
+            content: `Ekképen jutottak át Lengyelországba,
 Lengyelek földéről pedig Indiába;
 Franciaország és India határos,
 De köztök az út nem nagyon mulatságos.
@@ -618,10 +621,10 @@ Eztán nemsokára lejtősen haladtak,
 Alacsonyodtak már a hegyek alattok,
 A szörnyű forróság szinte szűnni kezdett,
 Mentül beljebb érték a francia földet.`,
-    },
-    {
-        title: "11.",
-        content: `A franciák földje gyönyörü tartomány,
+        },
+        {
+            title: "11.",
+            content: `A franciák földje gyönyörü tartomány,
 Egész paradicsom, egész kis Kánaán,
 Azért is vásott rá a törökök foga,
 Pusztitó szándékkal azért törtek oda.
@@ -670,10 +673,10 @@ Kukoricza Jancsi tán egymaga volt csak
 Meg nem hallója az elmondott dolognak;
 Jancsinak az esze más egyeben jára:
 Visszaemlékezett szép Iluskájára.`,
-    },
-    {
-        title: "12.",
-        content: `Másnap reggel a nap szokás szerint fölkelt,
+        },
+        {
+            title: "12.",
+            content: `Másnap reggel a nap szokás szerint fölkelt,
 De nem lát és nem hall olyat minden reggel,
 Mint amilyet hallott, mint amilyet látott
 Mindjárt, mihelyest a föld szélére hágott.
@@ -797,10 +800,10 @@ Nyájasdadon így szólt a szép királylyányhoz:
 "Menjünk, rózsám, elébb az édesatyádhoz.
 Ott majd közelebbről vizsgáljuk a dolgot."
 S ló előtt a lyánnyal lassacskán ballagott.`,
-    },
-    {
-        title: "13.",
-        content: `Kukoricza Jancsi meg a királyleány
+        },
+        {
+            title: "13.",
+            content: `Kukoricza Jancsi meg a királyleány
 Csatahelyre értek a nap alkonyatán.
 A leáldozó nap utósó sugára
 Vörös szemmel nézett a siralmas tájra.
@@ -904,10 +907,10 @@ S én másnak terhére lenni nem szeretek."
 Hiábavalóság, ami téged aggaszt."
 Igy biztatta őt a jó francia király,
 S János vitéz beszélt, amint itt írva áll:`,
-    },
-    {
-        title: "14.",
-        content: `"Hogy is kezdjem csak hát?... Mindennek előtte
+        },
+        {
+            title: "14.",
+            content: `"Hogy is kezdjem csak hát?... Mindennek előtte
 Hogyan tettem szert a Kukoricza névre ?
 Kukorica között találtak engemet,
 Ugy ruházták rám a Kukorica nevet.
@@ -1021,10 +1024,10 @@ Azért szép királylyány ne tarts reám számot;
 Mert ha nem bírhatom kedves Iluskámat:
 Nem is fogok bírni senkit e világon,
 Ha elfelejtkezik is rólam halálom."`,
-    },
-    {
-        title: "15.",
-        content: `János vitéz ekkép végzé történetét,
+        },
+        {
+            title: "15.",
+            content: `János vitéz ekkép végzé történetét,
 Nem hagyta hidegen a hallgatók szivét;
 A királylyány arcát mosta könnyhullatás,
 Melynek kútfeje volt bánat s szánakozás.
@@ -1058,10 +1061,10 @@ A király s a sereg elkisérte oda.
 Tőlök sok "szerencsés jó utat" hallhata,
 S szemeikkel néztek mindaddig utána,
 Mig a nagy messzeség ködöt nem vont rája.`,
-    },
-    {
-        title: "16.",
-        content: `Ment János vitézzel a megindult gálya,
+        },
+        {
+            title: "16.",
+            content: `Ment János vitézzel a megindult gálya,
 Szélbe kapaszkodott széles vitorlája,
 De sebesebben ment János gondolatja,
 Utjában semmi sem akadályoztatta.
@@ -1100,10 +1103,10 @@ Szelíd epedéssel tekintett utánok,
 Mintha azok neki jó hírt mondanának,
 Jó hírt Iluskáról, szép Iluskájáról,
 S oly régen nem látott kedves hazájáról.`,
-    },
-    {
-        title: "17.",
-        content: `Másnap, amint az ég alja jövendölte,
+        },
+        {
+            title: "17.",
+            content: `Másnap, amint az ég alja jövendölte,
 Csakugyan szél támadt, mégpedig nem gyönge.
 Zokogott a tenger hánykodó hulláma
 A zugó fergeteg korbácsolására.
@@ -1232,10 +1235,10 @@ Akkor legalább még egyszer megláthatom,
 S édes lesz nekem e keserű jutalom."
 De a menyecskének orcáján láthatta,
 Hogy nem volt hazugság előbbi szózata.`,
-    },
-    {
-        title: "18.",
-        content: `János reáborúlt az asztal sarkára,
+        },
+        {
+            title: "18.",
+            content: `János reáborúlt az asztal sarkára,
 S megeredt könnyének bőséges forrása,
 Amit mondott, csak ugy töredezve mondta,
 El - elakadt a nagy fájdalomtól hangja:
@@ -1289,10 +1292,10 @@ Elindult s mentében magában így szóla:
 Légy hűséges társam vándorlásaimnál;
 Vándorlok, vándorlok, a világ végeig,
 Míg kivánt halálom napja megérkezik."`,
-    },
-    {
-        title: "19.",
-        content: `János vitéznek volt utjában két társa:
+        },
+        {
+            title: "19.",
+            content: `János vitéznek volt utjában két társa:
 Egyik a búbánat, amely szívét rágta,
 Másik a kardja volt, bedugva hüvelybe,
 Ezt a török vértől rozsda emésztette.
@@ -1396,10 +1399,10 @@ Keresztülfutott a patak vize testén;
 Veres lett hulláma vértől befestetvén. -
 Hát Jánost mi érte, szerencse vagy inség ?
 Majd meghalljuk azt is, várjunk csak kicsinnyég.`,
-    },
-    {
-        title: "20.",
-        content: `János az erdőben mindig beljebb haladt;
+        },
+        {
+            title: "20.",
+            content: `János az erdőben mindig beljebb haladt;
 Sokszor meg - megállt a csodálkozás miatt,
 Mert nem látott minden léptében - nyomában
 Olyat, amit látott Óriásországban.
@@ -1508,10 +1511,10 @@ János bedugta a sípot tarsolyába,
 Kevélyen gondolva nagy diadalmára,
 És számos szerencse - kivánások között
 Az óriásoktól aztán elköltözött.`,
-    },
-    {
-        title: "21.",
-        content: `Nem bizonyos, mennyi ideig haladott,
+        },
+        {
+            title: "21.",
+            content: `Nem bizonyos, mennyi ideig haladott,
 De annyi bizonyos, mennél tovább jutott,
 Annál sötétebb lett előtte a világ,
 S egyszerre csak annyit vesz észre, hogy nem lát.
@@ -1615,10 +1618,10 @@ Az óriásoktól azután bucsút vett,
 Szivükre kötvén a jobbágyi hűséget.
 Ezek igérték, hogy hűségesek lesznek,
 S János vitéz jobbra és ők balra mentek.`,
-    },
-    {
-        title: "22.",
-        content: `Vándorolgatott az én János vitézem,
+        },
+        {
+            title: "22.",
+            content: `Vándorolgatott az én János vitézem,
 Meggyógyult már szíve a bútól egészen,
 Mert mikor keblén a rózsaszálra nézett,
 Nem volt az többé bú, amit akkor érzett.
@@ -1667,10 +1670,10 @@ János is felébredt a kakas szavára,
 Testét a hidegtől borzadás átjárta;
 Csipős szél lengette a síri füveket,
 Lábra szedte magát s utra kerekedett.`,
-    },
-    {
-        title: "23.",
-        content: `János vitéz egy nagy hegy tetején jára,
+        },
+        {
+            title: "23.",
+            content: `János vitéz egy nagy hegy tetején jára,
 Hogy a kelő hajnal rásütött arcára.
 Gyönyörűséges volt, amit ekkor látott,
 Meg is állt, hogy körülnézze a világot.
@@ -1724,10 +1727,10 @@ Kérdi János vitéz "gázolj által velem."
 "Meghiszem azt; foglalj a vállamon helyet.
 Így ni, most kapaszkodj meg jól a hajamba."
 És már meg is indult, amint ezt kimondta.`,
-    },
-    {
-        title: "24.",
-        content: `Vitte az óriás János vitézünket;
+        },
+        {
+            title: "24.",
+            content: `Vitte az óriás János vitézünket;
 Nagy lába egyszerre félmérföldet lépett,
 Három hétig vitte szörnyű sebességgel,
 De a tulsó partot csak nem érhették el.
@@ -1756,10 +1759,10 @@ Szófogadásra igy inté az óriást,
 Aki tovább nem is tett semmi kifogást,
 Hanem vitte őtet és a partra tette,
 És azután utját visszafelé vette.`,
-    },
-    {
-        title: "25.",
-        content: `Tündérország első kapuját őrzötte
+        },
+        {
+            title: "25.",
+            content: `Tündérország első kapuját őrzötte
 Félrőfös körmökkel három szilaj medve.
 De fáradságosan János keze által
 Mind a három medve egy lett a halállal.
@@ -1808,10 +1811,10 @@ Hej János vitéznek került sok bajába,
 Míg lyukat fúrhatott sárkány oldalába.
 Végtére kifurta, belőle kimászott,
 Kaput nyit, és látja szép Tündérországot.`,
-    },
-    {
-        title: "26.",
-        content: `Tündérországban csak híre sincs a télnek,
+        },
+        {
+            title: "26.",
+            content: `Tündérországban csak híre sincs a télnek,
 Ott örökös tavasz pompájában élnek;
 S nincsen ott nap kelte, nap lenyugovása,
 Örökös hajnalnak játszik pirossága.
@@ -1845,10 +1848,10 @@ Illatterhes szellők lanyha fuvallatja
 Tündérország még csak árnya e világnak.
 Ha a földi ember először lyányt ölel,
 Ennek az álomnak gyönyöre tölti el.`,
-    },
-    {
-        title: "27.",
-        content: `Hogy belépett János vitéz ez országba,
+        },
+        {
+            title: "27.",
+            content: `Hogy belépett János vitéz ez országba,
 Mindent, amit látott, csodálkozva láta.
 A rózsaszín fénytől kápráztak szemei,
 Alighogy merészelt körültekinteni.
@@ -1904,7 +1907,8 @@ Mai napig János vitéz őkegyelme
 Szép Tündérországnak boldog fejedelme.
 
 Pest, 1844. november - december`,
-    },
-];
+        },
+    ]
+};
 
 export default janosVitez;

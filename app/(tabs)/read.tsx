@@ -16,10 +16,11 @@ import { Text } from "@/components/Themed";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import toldi from "@/assets/texts/Toldi - Arany János";
+import { Book } from '../../constants/types';
 
 const { width, height } = Dimensions.get("window");
 
-export default function ReadingScreen() {
+export default function ReadingScreen({ book }: { book: Book }) {
   const [selectedWord, setSelectedWord] = useState("");
   const [definition, setDefinition] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -28,8 +29,6 @@ export default function ReadingScreen() {
 
   const EXPO_PUBLIC_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
   const colorScheme = useColorScheme();
-
-  
 
   useEffect(() => {
     // Retrieve the last chapter from AsyncStorage when the component mounts
@@ -146,7 +145,7 @@ export default function ReadingScreen() {
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={toldi.content} // Use the content array from toldi
+          data={book.content} // Use the content array from the book selected
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}

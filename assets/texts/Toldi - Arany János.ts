@@ -1,4 +1,6 @@
-const toldi = {
+import { Book } from '../../constants/types';
+
+const toldi: Book = {
     title: "Toldi",
     author: "Arany János",
     content: [
