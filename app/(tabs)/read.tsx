@@ -228,7 +228,7 @@ const getStyles = (colorScheme) => {
     },
     chapterContainer: {
       paddingHorizontal: 20,
-      paddingBottom: 300,
+      paddingBottom: 200,
       flexDirection: "column",
       justifyContent: "center",
     },

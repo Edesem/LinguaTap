@@ -44,7 +44,7 @@ export default function TabLayout() {
         name="library"
         options={{
           title: 'Library',
-          tabBarIcon: ({ color }) => <SymbolView name="magnifyingglass" tintColor={color} />,
+          tabBarIcon: ({ color }) => <SymbolView name="rectangle.stack" tintColor={color} />,
         }}
       />
 
