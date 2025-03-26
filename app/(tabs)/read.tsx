@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import {
   FlatList,
   ScrollView,
@@ -17,6 +17,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import toldi from "@/assets/texts/Toldi - Arany János";
 import { Book } from '../../constants/types';
+import { useDebouncedCallback } from "use-debounce";
 
 const { width, height } = Dimensions.get("window");
 
@@ -26,33 +27,77 @@ export default function ReadingScreen({ book }: { book: Book }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0); // To store the scroll position
+  const [lastSavedPosition, setLastSavedPosition] = useState(0);
+  const scrollViewRef = useRef<ScrollView | null>(null); // Ref to the ScrollView
 
   const EXPO_PUBLIC_API_KEY = process.env.EXPO_PUBLIC_API_KEY;
   const colorScheme = useColorScheme();
 
+  // Debounced save function to save scroll position after the user stops scrolling
+  const debouncedSave = useDebouncedCallback(
+    (yPosition: number) => {
+      // Save the scroll position with debounce
+      if (Math.abs(yPosition - lastSavedPosition) >= 10) {
+        setScrollPosition(yPosition);
+        setLastSavedPosition(yPosition); // Update the last saved position
+        AsyncStorage.setItem(`scrollPosition_${currentChapterIndex}`, yPosition.toString());
+      }
+    },
+    1000 // Delay of 1 second
+  );
+
   useEffect(() => {
-    // Retrieve the last chapter from AsyncStorage when the component mounts
-    const getLastChapter = async () => {
+    const getLastChapterAndPosition = async () => {
       try {
         const lastChapter = await AsyncStorage.getItem("lastChapter");
         if (lastChapter !== null) {
-          setCurrentChapterIndex(parseInt(lastChapter, 10)); // Set the last chapter index
+          setCurrentChapterIndex(parseInt(lastChapter, 10));
         }
       } catch (error) {
         console.error("Error retrieving last chapter:", error);
       }
     };
-    getLastChapter();
+
+    getLastChapterAndPosition();
   }, []);
 
-  const handleChapterChange = async (index: number) => {
-    try {
-      await AsyncStorage.setItem("lastChapter", index.toString()); // Save the current chapter index
-      setCurrentChapterIndex(index); // Update state with the new chapter index
-    } catch (error) {
-      console.error("Error saving last chapter:", error);
+  useEffect(() => {
+    const loadScrollPosition = async () => {
+      try {
+        // Load the scroll position for the current chapter after it's updated
+        const savedPosition = await AsyncStorage.getItem(`scrollPosition_${currentChapterIndex}`);
+        if (savedPosition !== null) {
+          setScrollPosition(parseInt(savedPosition, 10)); // Set the saved scroll position for the chapter
+          setLastSavedPosition(parseInt(savedPosition, 10)); // Update the last saved position
+        } else {
+          setScrollPosition(0); // If no saved position, start at the top
+        }
+      } catch (error) {
+        console.error("Error retrieving scroll position:", error);
+      }
+    };
+
+    if (currentChapterIndex !== null) {
+      loadScrollPosition();
     }
+  }, [currentChapterIndex]); // This effect runs when the chapter changes
+
+  const handleChapterChange = async (index: number) => {
+    // Save the current chapter index before the change
+    await AsyncStorage.setItem("lastChapter", index.toString());
+
+    // Reset the scroll position for the new chapter once it's loaded
+    setCurrentChapterIndex(index);
+    setScrollPosition(0); // Reset scroll position for the new chapter
+    setLastSavedPosition(0); // Reset the last saved position
   };
+
+  const handleScroll = (event: any) => {
+    const yPosition = event.nativeEvent.contentOffset.y;
+    debouncedSave(yPosition); // Call the debounced save function
+  };
+
 
   const extractHungarianDefinition = (content: string): string | null => {
     const lines = content.split("\n");
@@ -73,7 +118,7 @@ export default function ReadingScreen({ book }: { book: Book }) {
         `https://en.wiktionary.org/w/api.php?action=query&titles=${word}&prop=revisions&rvprop=content&format=json&origin=*`
       );
       const data = await response.json();
-      const page = Object.values(data.query.pages)[0];
+      const page = Object.values(data.query.pages)[0] as { revisions?: { [key: string]: any }[] };
 
       if (!page.revisions || !page.revisions[0]["*"]) return null;
 
@@ -145,7 +190,7 @@ export default function ReadingScreen({ book }: { book: Book }) {
       <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={book.content} // Use the content array from the book selected
+          data={toldi.content} // Use the content array from the book selected
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
@@ -153,7 +198,13 @@ export default function ReadingScreen({ book }: { book: Book }) {
           initialScrollIndex={currentChapterIndex}
           renderItem={({ item, index }) => (
             <View style={{ width, height }}>
-              <ScrollView contentContainerStyle={styles.chapterContainer}>
+              <ScrollView
+                contentContainerStyle={styles.chapterContainer}
+                ref={scrollViewRef}
+                onScroll={handleScroll} // Attach scroll handler
+                scrollEventThrottle={16} // Update scroll position at 60fps
+                contentOffset={{ x: 0, y: scrollPosition }} // Provide both x and y values
+              >
                 {/* Title and Author inside each chapter */}
                 {index === 0 && (
                   <>
@@ -181,7 +232,7 @@ export default function ReadingScreen({ book }: { book: Book }) {
           maxToRenderPerBatch={3}
           windowSize={5}
         />
-  
+
         <Modal visible={modalVisible} transparent animationType="slide">
           <View style={styles.modalBackground}>
             <View style={styles.modalBox}>
@@ -200,7 +251,6 @@ export default function ReadingScreen({ book }: { book: Book }) {
       </SafeAreaView>
     </SafeAreaProvider>
   );
-  
 }
 
 // Styles for both light and dark mode
