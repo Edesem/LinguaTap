@@ -9,6 +9,10 @@ import {
 import { Text, View } from '@/components/Themed';
 import { useRouter } from 'expo-router';
 
+// Importing the books content
+import { janosVitez } from '@/assets/texts/János Vitéz - Petőfi Sándor';
+import { toldi } from '@/assets/texts/Toldi - Arany János';
+
 export default function LibraryScreen() {
   const router = useRouter();
 
@@ -33,10 +37,21 @@ export default function LibraryScreen() {
   };
 
   const handleBookSelect = (book: string) => {
-    router.push({
-      pathname: '/(tabs)/read',
-      params: { book },
-    });
+    // Dynamically import the book content
+    let bookContent;
+    if (book === 'János Vitéz - Petőfi Sándor') {
+      bookContent = toldi
+    } else if (book === 'Toldi - Arany János') {
+      bookContent = janosVitez
+    }
+
+    // Navigate to the 'read' page with book content
+    if (bookContent) {
+      router.push({
+        pathname: '/(tabs)/read',
+        params: { book: bookContent },
+      });
+    }
   };
 
   return (
@@ -160,4 +175,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
