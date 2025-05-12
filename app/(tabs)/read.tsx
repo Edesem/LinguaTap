@@ -183,12 +183,8 @@ export default function ReadingScreen() {
                 contentOffset={{ x: 0, y: scrollPosition }} // Provide both x and y values
               >
                 {/* Title and Author inside each chapter */}
-                {index === 0 && (
-                  <>
-                    <Text style={styles.chapterTitle}>{item.title}</Text>
-                    <Text style={styles.chapterContent}>{item.content}</Text>
-                  </>
-                )}
+                <Text style={styles.chapterTitle}>{item.title}</Text>
+                <Text style={styles.chapterContent}>{item.content}</Text>
               </ScrollView>
             </View>
           )}
@@ -210,91 +206,91 @@ export default function ReadingScreen() {
   );
 }
 
-  // Styles for both light and dark mode
-  const getStyles = (colorScheme) => {
-    return StyleSheet.create({
-      container: {
-        flex: 1,
-        backgroundColor: colorScheme === "dark" ? "#121212" : "#f7f7f7",
-      },
-      title: {
-        fontSize: 32,
-        fontWeight: "700",
-        textAlign: "center",
-        marginVertical: 25,
-        color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
-        letterSpacing: 1,
-      },
-      author: {
-        fontSize: 20,
-        fontWeight: "300",
-        textAlign: "center",
-        color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
-        marginBottom: 20,
-      },
-      chapterContainer: {
-        paddingHorizontal: 20,
-        paddingBottom: 200,
-        flexDirection: "column",
-        justifyContent: "center",
-      },
-      chapterTitle: {
-        fontSize: 24,
-        fontWeight: "600",
-        marginBottom: 20,
-        paddingTop: 30,
-        color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
-        borderBottomWidth: 1,
-        borderBottomColor: colorScheme === "dark" ? "#444" : "#DDD",
-        paddingBottom: 10,
-      },
-      chapterContent: {
-        fontSize: 20,
-        lineHeight: 28,
-        color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
-        paddingHorizontal: 10,
-        paddingBottom: 100,
-      },
-      line: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginBottom: 8,
-        marginHorizontal: 10,
-      },
-      word: {
-        fontSize: 20,
-        color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
-        paddingHorizontal: 1.2,
-        fontFamily: "Georgia, serif",
-      },
-      modalBackground: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-      },
-      modalBox: {
-        width: 300,
-        padding: 20,
-        backgroundColor: colorScheme === "dark" ? "#1e1e1e" : "#fff",
-        borderRadius: 10,
-        alignItems: "center",
-      },
-      modalTitle: {
-        fontSize: 22,
-        fontWeight: "600",
-        color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
-      },
-      modalContent: {
-        marginTop: 20,
-        fontSize: 16,
-        color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
-        textAlign: "center",
-      },
-      closeButton: {
-        marginTop: 20,
-        fontSize: 16,
-        color: "#007AFF",
-      },
-    });
-  };
+// Styles for both light and dark mode
+const getStyles = (colorScheme) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colorScheme === "dark" ? "#121212" : "#f7f7f7",
+    },
+    title: {
+      fontSize: 32,
+      fontWeight: "700",
+      textAlign: "center",
+      marginVertical: 25,
+      color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+      letterSpacing: 1,
+    },
+    author: {
+      fontSize: 20,
+      fontWeight: "300",
+      textAlign: "center",
+      color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
+      marginBottom: 20,
+    },
+    chapterContainer: {
+      paddingHorizontal: 20,
+      paddingBottom: 200,
+      flexDirection: "column",
+      justifyContent: "center",
+    },
+    chapterTitle: {
+      fontSize: 24,
+      fontWeight: "600",
+      marginBottom: 20,
+      paddingTop: 30,
+      color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+      borderBottomWidth: 1,
+      borderBottomColor: colorScheme === "dark" ? "#444" : "#DDD",
+      paddingBottom: 10,
+    },
+    chapterContent: {
+      fontSize: 20,
+      lineHeight: 28,
+      color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
+      paddingHorizontal: 10,
+      paddingBottom: 100,
+    },
+    line: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      marginBottom: 8,
+      marginHorizontal: 10,
+    },
+    word: {
+      fontSize: 20,
+      color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
+      paddingHorizontal: 1.2,
+      fontFamily: "Georgia, serif",
+    },
+    modalBackground: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalBox: {
+      width: 300,
+      padding: 20,
+      backgroundColor: colorScheme === "dark" ? "#1e1e1e" : "#fff",
+      borderRadius: 10,
+      alignItems: "center",
+    },
+    modalTitle: {
+      fontSize: 22,
+      fontWeight: "600",
+      color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+    },
+    modalContent: {
+      marginTop: 20,
+      fontSize: 16,
+      color: colorScheme === "dark" ? "#ecf0f1" : "#2C3E50",
+      textAlign: "center",
+    },
+    closeButton: {
+      marginTop: 20,
+      fontSize: 16,
+      color: "#007AFF",
+    },
+  });
+};
