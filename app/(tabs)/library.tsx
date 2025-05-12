@@ -70,7 +70,6 @@ export default function LibraryScreen() {
 
   const handleBookSelect = async (book: Book) => {
     const bookContentUrl = await fetchBookContent(book.path);
-    console.log(bookContentUrl)
     if (bookContentUrl) {
       router.push({
         pathname: '/(tabs)/read',
