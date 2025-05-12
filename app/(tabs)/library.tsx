@@ -9,23 +9,28 @@ import {
 import { Text, View } from '@/components/Themed';
 import { useRouter } from 'expo-router';
 
-// Importing the books content
-import { janosVitez } from '@/assets/texts/János Vitéz - Petőfi Sándor';
-import { toldi } from '@/assets/texts/Toldi - Arany János';
+import { getStorage, ref, getDownloadURL, listAll } from 'firebase/storage';
+import { storage } from '../firebaseConfig'; // Import your firebase configuration
+
+type Book = {
+  name: string;
+  path: string;
+};
 
 export default function LibraryScreen() {
   const router = useRouter();
 
   const availableLanguages = ['English', 'Hungarian', 'Romanian'];
-  const availableBooks = {
-    English: ['Book 1', 'Book 2'],
-    Hungarian: ['János Vitéz - Petőfi Sándor', 'Toldi - Arany János'],
-    Romanian: ['Book X', 'Book Y'],
+  const availableBooks: Record<string, Book[]> = {
+    English: [],
+    Hungarian: [],
+    Romanian: [],
   };
 
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [books, setBooks] = useState<Book[]>([]);
 
   const filteredLanguages = availableLanguages.filter((lang) =>
     lang.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,22 +39,42 @@ export default function LibraryScreen() {
   const handleLanguageSelect = (language: string) => {
     setSelectedLanguage(language);
     setModalVisible(false);
+    fetchBooks(language);  // Fetch books whenever a language is selected
   };
 
-  const handleBookSelect = (book: string) => {
-    // Dynamically import the book content
-    let bookContent;
-    if (book === 'János Vitéz - Petőfi Sándor') {
-      bookContent = toldi
-    } else if (book === 'Toldi - Arany János') {
-      bookContent = janosVitez
+  // Fetch the list of books from Firebase Storage
+  const fetchBooks = async (language: string) => {
+    try {
+      const booksRef = ref(storage, `books/${language}/`);  // Assuming each language has its own directory
+      const listResult = await listAll(booksRef);
+      const booksList: Book[] = listResult.items.map(item => ({
+        name: item.name.replace('.txt', ''), // Remove the file extension
+        path: item.fullPath, // Full path of the file in Firebase Storage
+      }));
+      console.log(booksList)
+      availableBooks[language] = booksList;
+      setBooks(booksList);  // Set books to state to trigger re-render
+    } catch (error) {
+      console.error('Error fetching books:', error);
     }
+  };
 
-    // Navigate to the 'read' page with book content
-    if (bookContent) {
+  const fetchBookContent = async (bookPath: string) => {
+    try {
+      const bookRef = ref(storage, bookPath);
+      const url = await getDownloadURL(bookRef);
+      return url;
+    } catch (error) {
+      console.error('Error fetching book:', error);
+    }
+  };
+
+  const handleBookSelect = async (book: Book) => {
+    const bookContentUrl = await fetchBookContent(book.path);
+    if (bookContentUrl) {
       router.push({
         pathname: '/(tabs)/read',
-        params: { book: bookContent },
+        params: { bookUrl: bookContentUrl },
       });
     }
   };
@@ -71,14 +96,14 @@ export default function LibraryScreen() {
       {/* Book Selection */}
       {selectedLanguage && (
         <FlatList
-          data={availableBooks[selectedLanguage]}
-          keyExtractor={(item) => item}
+          data={books}
+          keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.bookItem}
               onPress={() => handleBookSelect(item)}
             >
-              <Text style={styles.bookText}>{item}</Text>
+              <Text style={styles.bookText}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
