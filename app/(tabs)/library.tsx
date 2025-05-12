@@ -48,10 +48,9 @@ export default function LibraryScreen() {
       const booksRef = ref(storage, `books/${language}/`);  // Assuming each language has its own directory
       const listResult = await listAll(booksRef);
       const booksList: Book[] = listResult.items.map(item => ({
-        name: item.name.replace('.txt', ''), // Remove the file extension
+        name: item.name.replace('.ts', ''), // Remove the file extension
         path: item.fullPath, // Full path of the file in Firebase Storage
       }));
-      console.log(booksList)
       availableBooks[language] = booksList;
       setBooks(booksList);  // Set books to state to trigger re-render
     } catch (error) {
@@ -71,10 +70,11 @@ export default function LibraryScreen() {
 
   const handleBookSelect = async (book: Book) => {
     const bookContentUrl = await fetchBookContent(book.path);
+    console.log(bookContentUrl)
     if (bookContentUrl) {
       router.push({
         pathname: '/(tabs)/read',
-        params: { bookUrl: bookContentUrl },
+        params: { bookUrl: encodeURI(bookContentUrl) },
       });
     }
   };

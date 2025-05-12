@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "app/firebaseConfig.ts"  ]
+, "app/firebaseConfig.ts", "assets/texts/János Vitéz - Petőfi Sándor.js", "assets/texts/Toldi - Arany János.js"  ]
 }

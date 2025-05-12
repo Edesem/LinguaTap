@@ -346,5 +346,3 @@ S zokogott magában, de senki sem hallá.`,
         }
     ]
 }
-
-export default toldi;

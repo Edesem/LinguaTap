@@ -1910,5 +1910,3 @@ Pest, 1844. november - december`,
         },
     ]
 };
-
-export default janosVitez;
