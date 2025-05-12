@@ -1,7 +1,6 @@
-toldi:
-  title: "Toldi"
-  author: "Arany János"
-  content:
+title: "Toldi"
+author: "Arany János"
+content:
     - title: ""
       content: |
         ,Mostan emlékezem az elmult időkről,
