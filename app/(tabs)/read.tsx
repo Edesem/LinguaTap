@@ -47,11 +47,7 @@ export default function ReadingScreen() {
           const response = await fetch(bookUrl);
           if (response.ok) {
             const rawYAML = await response.text();  // Get the raw YAML as text
-            console.log("Fetched YAML:", rawYAML);
-
             const book = yaml.load(rawYAML);  // Parse the YAML to a JS object
-            console.log("Parsed Book Object:", book);
-
             if (book && book.content) {
               setBookContent(book);  // Set the parsed content
             } else {
@@ -251,6 +247,13 @@ export default function ReadingScreen() {
         borderBottomWidth: 1,
         borderBottomColor: colorScheme === "dark" ? "#444" : "#DDD",
         paddingBottom: 10,
+      },
+      chapterContent: {
+        fontSize: 20,
+        lineHeight: 28,
+        color: colorScheme === "dark" ? "#bdc3c7" : "#34495E",
+        paddingHorizontal: 10,
+        paddingBottom: 100,
       },
       line: {
         flexDirection: "row",
